@@ -52,6 +52,6 @@ Mkfile.old
 dkms.conf
 
 # CodeBlocks Directories And Files
-.depend
+*.depend
 bin/ 
-.cbp
+*.cbp
