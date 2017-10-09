@@ -2,7 +2,7 @@
 
 int main () {
 
-	// code
+	compress_file();
 
 	return 0;
 }
