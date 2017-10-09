@@ -37,4 +37,4 @@ void frequency_table(FILE *file, u_int *frequency_array);
 
     Return: <descrição>
 */
-void compress();
+void compress_file();
