@@ -28,7 +28,9 @@ void frequency_table (FILE *file, u_int *frequency_array) {
 void compress_file () {
 
     FILE *imput_file = NULL;                  /* ponteiro para o arquivo de entrada */
-    char imput_file_name[MAX_STR_LEN];      /* string para guardar o nome do arquivo de entrada */
+
+    char imput_file_name[MAX_STR_LEN];        /* string para guardar o nome do arquivo de entrada */
+  
     u_int frequency_array[MAX_ARR_LEN] = {0}; /* array de frequência dos bytes do arquivo de entrada */
     u_int i;                                  /* controlador de loop */
 
@@ -52,9 +54,9 @@ void compress_file () {
 
     frequency_table(imput_file, frequency_array);
 
-    //for (i = 32 ; i <= 126 ; i++) {
-    //    if (frequency_array[i] != 0) {
-    //        printf("%c - %d\n", i, frequency_array[i]);
-    //    }
-    //}
+    for (i = 32 ; i <= 126 ; i++) {
+        if (frequency_array[i] != 0) {
+            printf("%c - %d\n", i, frequency_array[i]);
+        }
+    }
 }
