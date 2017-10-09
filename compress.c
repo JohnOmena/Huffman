@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include "compress.h"
-#include "screen.c"
+#include "screen.h"
 
 int open_file_test (FILE *file) {
 
