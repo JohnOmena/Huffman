@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include "compress.h"
 
 int main () {
 
