@@ -1,3 +1,5 @@
+#include <stdlib.h>
+#include <stdio.h>
 // tamanho máximo de uma string
 #define MAX_STR_LEN 256
 
@@ -11,4 +13,4 @@ int open_file_test(FILE *file);
 
 void frequency_table(FILE *file, u_int *frequency_array);
 
-void compress();
+void compress_file();

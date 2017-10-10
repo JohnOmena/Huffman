@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include "compress.h"
 #include "screen.h"
+#include "priority_queue.h"
 
 int open_file_test (FILE *file) {
 
@@ -57,4 +58,9 @@ void compress_file () {
     //        printf("%c - %d\n", i, frequency_array[i]);
     //    }
     //}
+
+    // Criando uma queue vazia e chamando a função de criar a queue a partir do array
+    Prio_queue* queue = create_queue();
+    end_queue(queue, frequency_array);
+    print_queue(queue); // para verificar se a lista está correta
 }
