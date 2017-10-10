@@ -1,3 +1,5 @@
+#include <stdio.h>
+
 // tamanho máximo de uma string
 #define MAX_STR_LEN 256
 

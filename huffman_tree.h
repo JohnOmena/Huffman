@@ -1,3 +1,5 @@
+#include "compress.h"
+
 typedef struct huffman_tree h_tree;
 
 h_tree* create_empty_huffman_tree (h_tree *tree);
