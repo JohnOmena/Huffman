@@ -1,3 +1,5 @@
+
+#include <stdlib.h>
 #include <stdio.h>
 
 // tamanho máximo de uma string
@@ -30,7 +32,6 @@ int open_file_test(FILE *file);
     Return: Nothing
 */
 void frequency_table(FILE *file, u_int *frequency_array);
-
 
 /*  Function: compress - comprime um arquivo usando a codificação de Huffman
 
