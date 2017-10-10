@@ -48,7 +48,7 @@ void add_node_queue(Prio_queue* p, u_char by, u_int freq){
     h_tree* nod = create_node(by, freq);
 
     // verfica se a queue esta vazia
-    if(que_empty(p) || p->head->frequency <= freq){
+    if(que_empty(p) || p->head->frequency >= freq){
 
         nod->next = p->head;
         p->head = nod;
@@ -57,7 +57,7 @@ void add_node_queue(Prio_queue* p, u_char by, u_int freq){
     } else {
 
         h_tree* nod_temp = p->head;
-        while(nod_temp->next != NULL && nod_temp->next->frequency > freq){
+        while(nod_temp->next != NULL && nod_temp->next->frequency < freq){
             nod_temp = nod_temp->next;
         }
 
