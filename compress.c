@@ -2,6 +2,7 @@
 #include "compress.h"
 #include "screen.h"
 #include "priority_queue.h"
+#include "huffman_tree.h"
 
 int open_file_test (FILE *file) {
 
@@ -31,7 +32,7 @@ void compress_file () {
     FILE *imput_file = NULL;                  /* ponteiro para o arquivo de entrada */
 
     char imput_file_name[MAX_STR_LEN];        /* string para guardar o nome do arquivo de entrada */
-  
+
     u_int frequency_array[MAX_ARR_LEN] = {0}; /* array de frequência dos bytes do arquivo de entrada */
     u_int i;                                  /* controlador de loop */
 
@@ -55,14 +56,29 @@ void compress_file () {
 
     frequency_table(imput_file, frequency_array);
 
-    //for (i = 32 ; i <= 126 ; i++) {
-    //    if (frequency_array[i] != 0) {
-    //        printf("%c - %d\n", i, frequency_array[i]);
-    //    }
-    //}
+    for (i = 0 ; i < 256 ; i++) {
+        if (frequency_array[i] != 0) {
+            if (i == 10) {
+                printf("\\n - %d\n", frequency_array[i]);
+            }
+            else {
+                printf("%c - %d\n", i, frequency_array[i]);
+            }
+        }
+    }
 
     // Criando uma queue vazia e chamando a função de criar a queue a partir do array
-    Prio_queue* queue = create_queue();
-    end_queue(queue, frequency_array);
-    print_queue(queue); // para verificar se a lista está correta
+    Prio_queue* p_queue = create_queue();
+
+    construct_queue(p_queue, frequency_array);
+
+    print_queue(p_queue); // para verificar se a lista está correta
+
+    h_tree *huff_tree = construct_huffman_tree(p_queue);
+
+    print_pre_order(huff_tree); // conferir se a árvore está correta
+
+    u_int tree_height = huffman_tree_height(huff_tree, 0); // conta qual a altura da árvore
+
+    printf("\nAltura da Àrvode ----> %d\n", tree_height); // imprime a altura da árvore
 }
