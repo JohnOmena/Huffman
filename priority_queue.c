@@ -1,19 +1,15 @@
-#include "priority_queue.h"
 #include <stdlib.h>
+#include "huffman_tree.h"
+#include "priority_queue.h"
 
-// TAD usadas
+// Estrutura de um nó
 struct huffman_tree {
-    h_tree* left;     // filho da esquerda
-    h_tree* right;    // filho da direita
-    h_tree* next;     // ponteiro para o próximo nó da lista (priority queue)
-    u_int frequency; // frequência do byte
-    u_char byte;     // byte
+    h_tree *left;     // filho da esquerda
+    h_tree *right;    // filho da direita
+    h_tree *next;     // ponteiro para o próximo nó da lista (priority queue)
+    u_int frequency;  // frequência do byte
+    u_char byte;      // byte
 };
-
-struct prio_queue {
-    h_tree* head; // Ponteiro para o primeiro elemento da priority queue
-};
-
 
 // Implementação da função de criação de queue
 Prio_queue* create_queue(){
@@ -68,8 +64,41 @@ void add_node_queue(Prio_queue* p, u_char by, u_int freq){
 
 }
 
+void add_parent_node (Prio_queue *p_queue, h_tree *parent_node) {
+
+    if(que_empty(p_queue) || p_queue->head->frequency >= parent_node->frequency){
+
+        parent_node->next = p_queue->head;
+        p_queue->head = parent_node;
+
+    }
+    else {
+
+        h_tree* nod_temp = p_queue->head;
+        while(nod_temp->next != NULL && nod_temp->next->frequency < parent_node->frequency){
+            nod_temp = nod_temp->next;
+        }
+
+        parent_node->next = nod_temp->next;
+        nod_temp->next = parent_node;
+
+    }
+}
+
+h_tree* dequeue_node (Prio_queue *p_queue) {
+    // Verifica se está tentando desenfileirar com a fila vazia
+
+    if (!que_empty(p_queue)) {
+        h_tree *node = p_queue->head;        // cria um nó que aponta para a cabeça da fila
+        p_queue->head = p_queue->head->next; // a cabeça da fila aponta para o próximo nó
+        node->next = NULL;                   // remove a ligação de node com a fila
+        return node;                         // retorna node
+    }
+    return NULL;
+}
+
 // Implementação da função que adiciona os nodes a lista de prioridade de acordo com array de freq
-void end_queue(Prio_queue* p, u_int str[]){
+void construct_queue(Prio_queue* p, u_int str[]){
 
     // Adionando os nodes
     int i;
@@ -88,13 +117,27 @@ void print_queue(Prio_queue* p){
     for ( ; nod != NULL ; nod = nod->next){
 
         if(nod->byte == '\n'){
-            printf("pula de linha - %d\t", nod->frequency);
+            if (nod->left == NULL && nod->right == NULL) {
+                printf("\\n|%d -> L()R() --> ", nod->frequency);
+            }
+            else {
+                printf("\\n|%d -> L(%c)R(%c) --> ", nod->frequency, nod->left->byte, nod->right->byte);
+            }
+            count++;
         } else {
-            printf("%c  - %d ", nod->byte, nod->frequency);
+            if (nod->left == NULL && nod->right == NULL) {
+                printf("%c|%d -> L()R() --> ", nod->byte, nod->frequency);
+            }
+            else {
+                printf("%c|%d -> L(%c)R(%c) --> ", nod->byte, nod->frequency, nod->left->byte, nod->right->byte);
+            }
+            count++;
         }
 
         if(count == 5){
             printf("\n");
+            count = 0;
         }
     }
+    printf("\n");
 }
