@@ -4,6 +4,33 @@
 #include "priority_queue.h"
 #include "huffman_tree.h"
 
+// Função para printar a tabela
+void print_table_way(u_char table_way[][256]){
+    int i, j;
+    printf("\n");
+    for(i = 0; i < 256 ; i++){
+        for(j = 0; j < 256 ; j ++){
+            if(table_way[i][0] == '\0'){
+                break;
+            } else if (table_way[i][j] != '\0'){
+                printf("%c ", table_way[i][j]);
+            } else {
+                printf("\n");
+                break;
+            }
+        }
+    }
+
+}
+
+// Função para iniciar todas as primeiras posições das colunas com \0 para indicar que não há caminho ainda
+void inicializar_table_way(u_char table_way[][256]){
+    int i;
+    for(i = 0; i < 256; i ++){
+        table_way[i][0] = '\0';
+    }
+}
+
 int open_file_test (FILE *file) {
 
     if (file == NULL) {
@@ -55,6 +82,7 @@ void compress_file () {
     //puts(imput_file_name);
 
     frequency_table(imput_file, frequency_array);
+    frequency_array[10] = 0;
 
     for (i = 0 ; i < 256 ; i++) {
         if (frequency_array[i] != 0) {
@@ -80,5 +108,14 @@ void compress_file () {
 
     u_int tree_height = huffman_tree_height(huff_tree, 0); // conta qual a altura da árvore
 
-    printf("\nAltura da Àrvode ----> %d\n", tree_height); // imprime a altura da árvore
+    printf("\nAltura da Árvore ----> %d\n", tree_height); // imprime a altura da árvore
+
+
+    u_char matriz_way[256][256];  // Criar a matriz que vai armazenar os caminhos
+    u_char array_temp[256]; // Array que vai armazenar o caminho temporário
+
+    inicializar_table_way(matriz_way); // Inicializa a tabela para indicar que não há caminho ainda olhar o .h para melhores informações
+    create_way_table(matriz_way, array_temp, huff_tree, 0); // Cria a tabela com base na huffman_tree
+    print_table_way(matriz_way); // Printa a tabela com os caminhos
+    //printf("\nAltura da Àrvode ----> %d\n", tree_height); // imprime a altura da árvore
 }

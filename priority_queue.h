@@ -20,6 +20,7 @@ int que_empty(Prio_queue* p);
 // Adicionando um node a lista de prioridade
 void add_node_queue(Prio_queue* p, u_char ch, u_int freq);
 
+// Adiciona um nó pai na fila de prioridade
 void add_parent_node (Prio_queue *p_queue, h_tree *parent_node);
 
 // Remove um nó da fila de prioridade
