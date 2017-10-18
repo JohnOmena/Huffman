@@ -1,7 +1,5 @@
 #include "huffman_tree.h"
-#include "compress.h"
 #include "priority_queue.h"
-#include "useful.h"
 
 // Estrutura de um nó
 struct huffman_tree {
@@ -10,6 +8,7 @@ struct huffman_tree {
     h_tree *next;     // ponteiro para o próximo nó da lista (priority queue)
     u_int frequency;  // frequência do byte
     u_char byte;      // byte
+    int quant_nodes;   // quantos nós tem a fila de prioridade
 };
 
 // Cria um ponteiro para um nó vazio

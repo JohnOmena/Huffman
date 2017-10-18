@@ -1,6 +1,4 @@
-#include <stdio.h>
 #include "compress.h"
-#include "screen.h"
 #include "priority_queue.h"
 #include "huffman_tree.h"
 
@@ -100,22 +98,21 @@ void compress_file () {
 
     construct_queue(p_queue, frequency_array);
 
-    print_queue(p_queue); // para verificar se a lista está correta
+    //print_queue(p_queue); // para verificar se a lista está correta
+
+    //quant_nodes_queue(p_queue); // Verificar a quantidade de nodes na Queue
 
     h_tree *huff_tree = construct_huffman_tree(p_queue);
 
-    print_pre_order(huff_tree); // conferir se a árvore está correta
+    //print_pre_order(huff_tree); // conferir se a árvore está correta
 
-    u_int tree_height = huffman_tree_height(huff_tree, 0); // conta qual a altura da árvore
-
-    printf("\nAltura da Árvore ----> %d\n", tree_height); // imprime a altura da árvore
-
+    //u_int tree_height = huffman_tree_height(huff_tree, 0); // conta qual a altura da árvore
 
     u_char matriz_way[256][256];  // Criar a matriz que vai armazenar os caminhos
     u_char array_temp[256]; // Array que vai armazenar o caminho temporário
 
     inicializar_table_way(matriz_way); // Inicializa a tabela para indicar que não há caminho ainda olhar o .h para melhores informações
     create_way_table(matriz_way, array_temp, huff_tree, 0); // Cria a tabela com base na huffman_tree
-    print_table_way(matriz_way); // Printa a tabela com os caminhos
+    //print_table_way(matriz_way); // Printa a tabela com os caminhos
     //printf("\nAltura da Àrvode ----> %d\n", tree_height); // imprime a altura da árvore
 }
