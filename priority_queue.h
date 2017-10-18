@@ -9,6 +9,7 @@ typedef struct huffman_tree h_tree;
 
 struct prio_queue {
     h_tree* head; // Ponteiro para o primeiro elemento da priority queue
+    int quant_nodes;
 };
 
 
@@ -35,6 +36,7 @@ h_tree* dequeue_node (Prio_queue *p_queue);
 void print_queue(Prio_queue* p);
 
 // Função de criar a lista final com os nodes inseridos de acordo com o array de freq
-
 void construct_queue(Prio_queue* queu, u_int str[]);
 
+// Função de verificar a quantidade de nodes existentes na queue
+int quant_nodes_queue(Prio_queue* p_queue);

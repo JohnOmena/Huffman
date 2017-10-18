@@ -15,6 +15,7 @@ struct huffman_tree {
 Prio_queue* create_queue(){
     Prio_queue* p = (Prio_queue*) calloc(1, sizeof(Prio_queue)); // Alocando a Lista;
 
+    p->quant_nodes = 0;
     p->head = NULL; // Setando sua cabeça para NULL (inicialmente)
     return p;
 
@@ -28,6 +29,7 @@ h_tree* create_node(u_char by, u_int freq){
     nod->frequency = freq;
     nod->byte = by;
     nod->left = nod->right = nod->next = NULL;
+
 
     return nod;
 }
@@ -62,6 +64,7 @@ void add_node_queue(Prio_queue* p, u_char by, u_int freq){
 
     }
 
+    p->quant_nodes ++;
 }
 
 void add_parent_node (Prio_queue *p_queue, h_tree *parent_node) {
@@ -83,6 +86,7 @@ void add_parent_node (Prio_queue *p_queue, h_tree *parent_node) {
         nod_temp->next = parent_node;
 
     }
+    p_queue->quant_nodes ++;
 }
 
 h_tree* dequeue_node (Prio_queue *p_queue) {
@@ -118,23 +122,23 @@ void print_queue(Prio_queue* p){
 
         if(nod->byte == '\n'){
             if (nod->left == NULL && nod->right == NULL) {
-                printf("\\n|%d -> L()R() --> ", nod->frequency);
+                printf("Espaço |%d -> L()R() --> ", nod->frequency);
             }
             else {
-                printf("\\n|%d -> L(%c)R(%c) --> ", nod->frequency, nod->left->byte, nod->right->byte);
+                printf("Espaço |%d -> L(%c)R(%c) --> ", nod->frequency, nod->left->byte, nod->right->byte);
             }
             count++;
         } else {
             if (nod->left == NULL && nod->right == NULL) {
-                printf("%c|%d -> L()R() --> ", nod->byte, nod->frequency);
+                printf("%c | %d -> L()R() --> ", nod->byte, nod->frequency);
             }
             else {
-                printf("%c|%d -> L(%c)R(%c) --> ", nod->byte, nod->frequency, nod->left->byte, nod->right->byte);
+                printf("%c |%d -> L(%c)R(%c) --> ", nod->byte, nod->frequency, nod->left->byte, nod->right->byte);
             }
             count++;
         }
 
-        if(count == 5){
+        if(count == 100){
             printf("\n");
 
             count = 0;
@@ -142,4 +146,9 @@ void print_queue(Prio_queue* p){
     }
     printf("\n");
 
+}
+
+// Verifica a quantidade de nodes da Queue
+int quant_nodes_queue(Prio_queue* p_queue){
+    printf("\n%d nodes na lista\n", p_queue->quant_nodes);
 }
