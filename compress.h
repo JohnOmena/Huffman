@@ -1,3 +1,4 @@
+#include <stdlib.h>
 #include <stdio.h>
 
 // tamanho máximo de uma string
@@ -31,7 +32,7 @@ int open_file_test(FILE *file);
 */
 void frequency_table(FILE *file, u_int *frequency_array);
 
-/*  Function: compress - comprime um arquivo usando a codificação de Huffman
+/*  Function: compress_file - comprime um arquivo usando a codificação de Huffman
 
     Parameters:
         - <lista de parâmetros>
@@ -39,3 +40,13 @@ void frequency_table(FILE *file, u_int *frequency_array);
     Return: <descrição>
 */
 void compress_file();
+
+/* Function: way_table - cria os caminhos de todos as folhas presentes na arvore de huffman em uma matriz
+
+    Parameters:
+
+        - u_int way - matriz que possui os caminhos de cada folha
+        - h_tree huff_tree - arvore de huffman montada
+
+    Return: Nothing
+*/
