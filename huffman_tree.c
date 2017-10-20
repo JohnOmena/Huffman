@@ -1,5 +1,6 @@
 #include "huffman_tree.h"
 #include "priority_queue.h"
+#include "useful.h"
 
 // Estrutura de um nó
 struct huffman_tree {
@@ -46,6 +47,10 @@ int tree_empty (h_tree *tree) {
     return (tree == NULL);
 }
 
+int is_leaf (h_tree *tree) {
+    return ((tree->left == NULL) && (tree->right == NULL));
+}
+
 // Imprime a Árvore de Huffman em pré ordem
 void print_pre_order (h_tree *tree) {
     if (!tree_empty(tree)) {
@@ -80,19 +85,48 @@ void colocar_na_matriz(u_char matriz[][256], u_char array_temp[], u_char byte, i
 
 void create_way_table(u_char matriz_way[][256], u_char array_temp[], h_tree* huffman_tree, int posi){
 
-
-
     if(huffman_tree->left == NULL && huffman_tree->right == NULL){
 
         colocar_na_matriz(matriz_way, array_temp, huffman_tree->byte, posi);
         return;
     }
 
-
+    if (huffman_tree->left != NULL) {
         array_temp[posi] = '0';
         create_way_table(matriz_way, array_temp, huffman_tree->left,  posi + 1);
+    }
+
+    if (huffman_tree->right != NULL) {
         array_temp[posi] = '1';
         create_way_table(matriz_way, array_temp, huffman_tree->right, posi + 1);
+    }
+}
 
+void write_huff_tree (h_tree *tree, int *tree_size, FILE *output_file) {
 
+    if (is_leaf(tree)) {
+
+        if (tree->byte == '\\' || tree->byte == '*') {
+
+            u_char byte = '\\';
+            (*tree_size)++;
+            fwrite(&byte, sizeof(u_char), 1, output_file);
+        }
+
+        (*tree_size)++;
+        fwrite(&tree->byte, sizeof(u_char), 1, output_file);
+
+        return;
+    }
+
+    (*tree_size)++;
+    fwrite(&tree->byte, sizeof(u_char), 1, output_file);
+
+    if (tree->left != NULL) {
+        write_huff_tree(tree->left, tree_size, output_file);
+    }
+
+    if (tree->right != NULL) {
+        write_huff_tree(tree->right, tree_size, output_file);
+    }
 }

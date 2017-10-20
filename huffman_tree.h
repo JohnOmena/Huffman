@@ -38,6 +38,8 @@ h_tree* construct_huffman_tree (Prio_queue *p_queue);
 
 int tree_empty (h_tree *tree);
 
+int is_leaf (h_tree *tree);
+
 void print_pre_order (h_tree *tree);
 
 u_int huffman_tree_height (h_tree *tree, u_int height);
@@ -84,3 +86,5 @@ void create_way_table(u_char matriz_way[][256], u_char array_temp[], h_tree* huf
 */
 
 void colocar_na_matriz(u_char matriz_way[][256], u_char array_temp[], u_char byte, int posi);
+
+void write_huff_tree (h_tree *tree, int *tree_size, FILE *output_file);
