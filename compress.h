@@ -9,6 +9,7 @@
 
 typedef unsigned char u_char;
 typedef unsigned int u_int;
+typedef struct huffman_tree h_tree;
 
 /*  Function: open_file_test - Testa o ponteiro file e indica se a
         abertura do arquivo foi bem o mal sucedida.
@@ -40,6 +41,8 @@ void frequency_table(FILE *file, u_int *frequency_array);
     Return: <descrição>
 */
 void compress_file();
+
+void create_header (FILE *output_file, h_tree *tree, int *tree_size);
 
 /* Function: way_table - cria os caminhos de todos as folhas presentes na arvore de huffman em uma matriz
 
