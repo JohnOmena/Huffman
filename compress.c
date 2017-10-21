@@ -10,6 +10,9 @@ void print_table_way(u_char table_way[][256]){
     int i, j;
     printf("\n");
     for(i = 0; i < 256 ; i++){
+            if (table_way[i][0] != '\0') {
+                printf("%d - ", i);
+            }
         for(j = 0; j < 256 ; j ++){
             if(table_way[i][0] == '\0'){
                 break;
@@ -65,6 +68,51 @@ void create_header (FILE *output_file, h_tree *tree, int *tree_size) {
     write_huff_tree(tree, tree_size, output_file);
 }
 
+void write_compressed_file (FILE *imput_file, FILE *output_file, u_char table[][256], int tree_size) {
+
+    u_char byte = 0;
+    u_char byte_aux;
+    short int bit_index = 0;
+    int str_index = 0;
+
+    rewind(imput_file);
+    while (fread(&byte_aux, sizeof(u_char), 1, imput_file) == 1) {
+
+        str_index = 0;
+        while (table[byte_aux][str_index] != '\0') {
+
+            if (bit_index == 8) {
+                //printf("---%d", byte);
+                fwrite(&byte, sizeof(u_char), 1, output_file);
+                byte = 0;
+                bit_index = 0;
+            }
+
+            if (table[byte_aux][str_index] & 1) {
+
+                byte = set_bit(byte, bit_index);
+            }
+            str_index++;
+            bit_index++;
+        }
+    }
+    //printf("---%d", byte);
+    fwrite(&byte, sizeof(u_char), 1, output_file);
+    //printf("\nBIT = %d\n", bit_index);
+
+    u_char trash_size = ((8 - bit_index) << 5);
+    u_char str_tree_size = tree_size;
+    //printf("str size = %d", str_tree_size);
+    //printf("trash = %d", trash_size);
+
+    rewind(output_file);
+    fwrite(&trash_size, sizeof(u_char), 1, output_file);
+    fwrite(&str_tree_size, sizeof(u_char), 1, output_file);
+
+    //print_binary_file();
+    return;
+}
+
 void compress_file () {
 
     FILE *imput_file = NULL;                  /* ponteiro para o arquivo de entrada */
@@ -99,7 +147,7 @@ void compress_file () {
     //puts(output_file_name);
 
     frequency_table(imput_file, frequency_array);
-    frequency_array[10] = 0;
+    // frequency_array[10] = 0;
 
     /*for (i = 0 ; i < 256 ; i++) {
         if (frequency_array[i] != 0) {
@@ -132,13 +180,18 @@ void compress_file () {
 
     inicializar_table_way(matriz_way); // Inicializa a tabela para indicar que não há caminho ainda olhar o .h para melhores informações
     create_way_table(matriz_way, array_temp, huff_tree, 0); // Cria a tabela com base na huffman_tree
-    print_table_way(matriz_way); // Printa a tabela com os caminhos
-    printf("\nAltura da Àrvode ----> %d\n", huffman_tree_height(huff_tree, 0)); // imprime a altura da árvore
+    // print_table_way(matriz_way); // Printa a tabela com os caminhos
 
     int *tree_size = (int*) malloc(sizeof(int));
 
     output_file = fopen(output_file_name, "wb");
     create_header(output_file, huff_tree, tree_size);
+    write_compressed_file(imput_file, output_file, matriz_way, *tree_size);
 
-    //printf("\nTamanho da árvore = %d\n", *tree_size);
+    printf(" > Arquivo comprimido!\n");
+
+    fclose(imput_file);
+    fclose(output_file);
+
+    return;
 }
