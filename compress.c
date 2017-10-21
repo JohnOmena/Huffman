@@ -70,44 +70,44 @@ void create_header (FILE *output_file, h_tree *tree, int *tree_size) {
 
 void write_compressed_file (FILE *imput_file, FILE *output_file, u_char table[][256], int tree_size) {
 
-    u_char byte = 0;
-    u_char byte_aux;
-    short int bit_index = 0;
-    int str_index = 0;
+    u_char byte = 0;         // byte para a escrita no arquivo (0000 0000)
+    u_char byte_aux;         // byte de leitura no imput_file
+    short int bit_index = 0; // controla a posição dos bits de byte
+    int str_index = 0;       // controla a posição dos caracteres das strings de table
 
-    rewind(imput_file);
+    rewind(imput_file);      // Retorna para a posição inicial de leitura/escrita do arquivo
     while (fread(&byte_aux, sizeof(u_char), 1, imput_file) == 1) {
 
         str_index = 0;
         while (table[byte_aux][str_index] != '\0') {
 
-            if (bit_index == 8) {
+            if (bit_index == 8) { // quando o byte estiver 'cheio', escreva no arquivo
                 //printf("---%d", byte);
                 fwrite(&byte, sizeof(u_char), 1, output_file);
-                byte = 0;
-                bit_index = 0;
+                byte = 0;      // reseta o byte
+                bit_index = 0; // reseta o controlador dos bits
             }
 
             if (table[byte_aux][str_index] & 1) {
 
-                byte = set_bit(byte, bit_index);
+                byte = set_bit(byte, bit_index); // seta o bit em byte
             }
             str_index++;
             bit_index++;
         }
     }
     //printf("---%d", byte);
-    fwrite(&byte, sizeof(u_char), 1, output_file);
+    fwrite(&byte, sizeof(u_char), 1, output_file); // escreve o último byte
     //printf("\nBIT = %d\n", bit_index);
 
-    u_char trash_size = ((8 - bit_index) << 5);
-    u_char str_tree_size = tree_size;
+    u_char trash_size = ((8 - bit_index) << 5); // pegando o tamanho do lixo (bit que sobraramna escrita)
+    u_char str_tree_size = tree_size;           // tamanho da string da árvore de Huffman
     //printf("str size = %d", str_tree_size);
     //printf("trash = %d", trash_size);
 
     rewind(output_file);
-    fwrite(&trash_size, sizeof(u_char), 1, output_file);
-    fwrite(&str_tree_size, sizeof(u_char), 1, output_file);
+    fwrite(&trash_size, sizeof(u_char), 1, output_file);    // escreve o tamanho do lixo
+    fwrite(&str_tree_size, sizeof(u_char), 1, output_file); // escreve o tamanho da árvore
 
     //print_binary_file();
     return;
@@ -182,16 +182,16 @@ void compress_file () {
     create_way_table(matriz_way, array_temp, huff_tree, 0); // Cria a tabela com base na huffman_tree
     // print_table_way(matriz_way); // Printa a tabela com os caminhos
 
-    int *tree_size = (int*) malloc(sizeof(int));
+    int *tree_size = (int*) malloc(sizeof(int));      // ponteiro int para pegar o tamanho da árvore
 
-    output_file = fopen(output_file_name, "wb");
-    create_header(output_file, huff_tree, tree_size);
-    write_compressed_file(imput_file, output_file, matriz_way, *tree_size);
+    output_file = fopen(output_file_name, "wb");      // abrindo o arquivo em modo de escrita em binário
+    create_header(output_file, huff_tree, tree_size); // criando o cabeçalho
+    write_compressed_file(imput_file, output_file, matriz_way, *tree_size); // escrevendo o arquivo comprimido
 
     printf(" > Arquivo comprimido!\n");
 
-    fclose(imput_file);
-    fclose(output_file);
+    fclose(imput_file);  // fechando o arquivo de origem
+    fclose(output_file); // fechando o arquivo comprimido
 
     return;
 }

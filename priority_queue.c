@@ -147,8 +147,3 @@ void print_queue(Prio_queue* p){
     printf("\n");
 
 }
-
-// Verifica a quantidade de nodes da Queue
-int quant_nodes_queue(Prio_queue* p_queue){
-    printf("\n%d nodes na lista\n", p_queue->quant_nodes);
-}
