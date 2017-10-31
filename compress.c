@@ -103,7 +103,7 @@ void compress_file () {
     printf(" |_(_) \\____/\\___/|_| |_| |_| .__/ \\__,_|\\___|\\__\\__,_|_|   \n");
     printf("                            |_|                             \n\n");
 
-    printf(" Digite o nome do arquivo que deseja comprimir:\n\n");
+    printf(" Digite o nome do arquivo que deseja comprimir (com a extensão):\n\n");
     printf(" Exemplo: arquivo.txt\n > ");
     scanf("%[^\n]s", imput_file_name);
     getchar();
