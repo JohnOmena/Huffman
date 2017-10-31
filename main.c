@@ -1,9 +1,9 @@
 #include <stdio.h>
-#include "compress.h"
+#include "screen.h"
 
 int main () {
 
-	compress_file();
+	main_menu();
 
 	return 0;
 }

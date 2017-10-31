@@ -51,30 +51,6 @@ int is_leaf (h_tree *tree) {
     return ((tree->left == NULL) && (tree->right == NULL));
 }
 
-// Imprime a Árvore de Huffman em pré ordem
-void print_pre_order (h_tree *tree) {
-    if (!tree_empty(tree)) {
-        if (tree->byte == '\n') {
-            printf("\\n");
-        }
-        else {
-            printf("%c", tree->byte);
-        }
-        print_pre_order(tree->left);
-        print_pre_order(tree->right);
-    }
-}
-
-u_int huffman_tree_height (h_tree *tree, u_int height) {
-
-    if ((tree->left == NULL) && (tree->right == NULL)) {
-        return height;
-    }
-    else {
-        return max(huffman_tree_height(tree->left, height + 1), huffman_tree_height(tree->right, height + 1));
-    }
-}
-
 void colocar_na_matriz(u_char matriz[][256], u_char array_temp[], u_char byte, int posi){
     int i;
     for(i = 0; i < posi; i ++){
@@ -129,4 +105,33 @@ void write_huff_tree (h_tree *tree, int *tree_size, FILE *output_file) {
     if (tree->right != NULL) {
         write_huff_tree(tree->right, tree_size, output_file);
     }
+}
+
+h_tree* reconstruct_huff_tree (FILE *compressed_file, h_tree *tree) {
+
+    u_char byte;
+
+    fread(&byte, sizeof(u_char), 1, compressed_file);
+
+    if (byte == '*') {
+
+        tree = create_node(byte, 0);
+
+        tree->left = reconstruct_huff_tree(compressed_file, tree->left);
+        tree->right = reconstruct_huff_tree(compressed_file, tree->right);
+    }
+    else {
+
+        if (byte == '\\') {
+
+            fread(&byte, sizeof(u_char), 1, compressed_file);
+            tree = create_node(byte, 0);
+        }
+        else {
+
+            tree = create_node(byte, 0);
+        }
+    }
+
+    return tree;
 }

@@ -113,37 +113,3 @@ void construct_queue(Prio_queue* p, u_int str[]){
     }
 
 }
-
-// Implementação da função que printa a lista
-void print_queue(Prio_queue* p){
-    int count = 0;
-    h_tree* nod = p->head;
-    for ( ; nod != NULL ; nod = nod->next){
-
-        if(nod->byte == '\n'){
-            if (nod->left == NULL && nod->right == NULL) {
-                printf("Espaço |%d -> L()R() --> ", nod->frequency);
-            }
-            else {
-                printf("Espaço |%d -> L(%c)R(%c) --> ", nod->frequency, nod->left->byte, nod->right->byte);
-            }
-            count++;
-        } else {
-            if (nod->left == NULL && nod->right == NULL) {
-                printf("%c | %d -> L()R() --> ", nod->byte, nod->frequency);
-            }
-            else {
-                printf("%c |%d -> L(%c)R(%c) --> ", nod->byte, nod->frequency, nod->left->byte, nod->right->byte);
-            }
-            count++;
-        }
-
-        if(count == 100){
-            printf("\n");
-
-            count = 0;
-        }
-    }
-    printf("\n");
-
-}
